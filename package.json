@@ -1,0 +1,111 @@
+{
+    "name": "@lbrto/rose",
+    "description": "A static site generator based on @lbrto/prim",
+    "version": "1.0.4",
+    "author": "Alberto Piu <a@lbr.to>",
+    "bin": {
+        "rose": "./bin/run"
+    },
+    "bugs": "https://github.com/alberteddu/rose/issues",
+    "dependencies": {
+        "@oclif/command": "^1",
+        "@oclif/config": "^1",
+        "@oclif/plugin-help": "^3",
+        "tslib": "^1"
+    },
+    "devDependencies": {
+        "@commitlint/cli": "^12.1.4",
+        "@commitlint/config-conventional": "^7.1.2",
+        "@oclif/dev-cli": "^1",
+        "@semantic-release/changelog": "^5.0.1",
+        "@semantic-release/commit-analyzer": "^8.0.1",
+        "@semantic-release/git": "^9.0.0",
+        "@semantic-release/github": "^7.2.3",
+        "@semantic-release/release-notes-generator": "^9.0.2",
+        "@types/jest": "^23.3.2",
+        "@types/node": "^10",
+        "commitizen": "^4.2.4",
+        "cz-conventional-changelog": "^2.1.0",
+        "eslint": "^7.27.0",
+        "eslint-config-blitz": "^0.35.0",
+        "globby": "^10",
+        "husky": "^1.0.1",
+        "jest": "^26.6.3",
+        "jest-config": "^26.6.3",
+        "lint-staged": "^11.0.0",
+        "prettier": "^1.14.3",
+        "semantic-release": "^17.4.3",
+        "ts-jest": "^26.5.6",
+        "ts-node": "^8",
+        "typescript": "^4.2.4"
+    },
+    "engines": {
+        "node": ">=8.0.0"
+    },
+    "files": [
+        "/bin",
+        "/lib",
+        "/npm-shrinkwrap.json",
+        "/oclif.manifest.json"
+    ],
+    "homepage": "https://github.com/alberteddu/rose",
+    "keywords": [
+        "oclif",
+        "static",
+        "static site generator"
+    ],
+    "license": "MIT",
+    "main": "lib/index.js",
+    "oclif": {
+        "commands": "./lib/commands",
+        "bin": "rose",
+        "plugins": [
+            "@oclif/plugin-help"
+        ]
+    },
+    "repository": "alberteddu/rose",
+    "scripts": {
+        "lint": "eslint 'src/**/*.{js,ts,tsx}' --max-warnings=0",
+        "lint-fix": "eslint 'src/**/*.{js,ts,tsx}' --fix",
+        "is-pretty": "prettier --check 'src/**/*.{js,ts,tsx}'",
+        "make-pretty": "prettier --write 'src/**/*.{js,ts,tsx}'",
+        "compile": "tsc -b",
+        "prerelease": "rm -rf lib && npm run compile && oclif-dev manifest && npm run update-readme",
+        "update-readme": "oclif-dev readme && git add README.md",
+        "commit": "git-cz",
+        "semantic-release": "semantic-release",
+        "test": "jest --coverage",
+        "test:watch": "jest --coverage --watch",
+        "test:debug": "node --inspect-brk node_modules/.bin/jest --runInBand --watch",
+        "test:prod": "npm run lint && npm run is-pretty && npm run test -- --no-cache && npm run compile"
+    },
+    "lint-staged": {
+        "*": [
+            "npm run update-readme"
+        ],
+        "{src,test}/**/*.ts": [
+            "prettier --write"
+        ]
+    },
+    "config": {
+        "commitizen": {
+            "path": "node_modules/cz-conventional-changelog"
+        }
+    },
+    "commitlint": {
+        "extends": [
+            "@commitlint/config-conventional"
+        ]
+    },
+    "types": "lib/index.d.ts",
+    "publishConfig": {
+        "access": "public"
+    },
+    "husky": {
+        "hooks": {
+            "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
+            "pre-commit": "lint-staged",
+            "pre-push": "npm run test && npm run prerelase"
+        }
+    }
+}

@@ -1,0 +1,13 @@
+*-debug.log
+*-error.log
+/.nyc_output
+/dist
+/lib
+/package-lock.json
+/tmp
+node_modules
+.idea
+.DS_Store
+coverage
+oclif.manifest.json
+pack
